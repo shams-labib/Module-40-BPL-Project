@@ -1,20 +1,32 @@
 import React, { useState } from 'react';
 import UserImg from '../../assets/user-1.png'
 import FlagImg from '../../assets/report-1.png'
+import { toast } from 'react-toastify';
 
-const PlayerCard = ({player, setAvailableBalance, availableBalance}) => {
+
+const PlayerCard = ({player, setAvailableBalance, availableBalance, setPurschedPlayers, purschedPlayers}) => {
     const [isSelected, setIsSelected] = useState(false)
+    // console.log(purschedPlayers);
+    
 
     
     const handleSelected = (playerData)=>{
         const playerPrice = parseInt(playerData['price'].split('USD').join("").split(",").join("").split('BDT').join(''));
         if(availableBalance< playerPrice){
-            alert('Balance Low');
+            toast('Balance Low');
             return ;
         }
+        if(purschedPlayers.length===6){
+          toast('Already 6 Card Added')
+          return;
+        }
 
-        setIsSelected(true), setAvailableBalance(availableBalance - playerPrice)
-    }
+        setIsSelected(true);
+        setAvailableBalance(availableBalance - playerPrice);
+        setPurschedPlayers([...purschedPlayers, playerData])
+
+        toast('Player purchased')
+    };
 
 
     return (
